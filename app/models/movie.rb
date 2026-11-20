@@ -14,7 +14,7 @@ class Movie < ApplicationRecord
     (data['results'] || []).map do |m|
       Movie.new(title: m['title'], release_date: m['release_date'],
                 description: m['overview'], rating: 'R')
-    end
+    end.reject { |m| Movie.exists?(title: m.title, release_date: m.release_date) }
   end
 
   def self.with_ratings(ratings, sort_by)

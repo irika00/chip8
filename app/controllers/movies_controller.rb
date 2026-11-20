@@ -34,10 +34,14 @@ class MoviesController < ApplicationController
   end
   
   def add_movie
-    movie = Movie.create(title: params[:title], rating: params[:rating],
-                         description: params[:description],
-                         release_date: params[:release_date])
-    flash[:success] = "#{movie.title} was successfully added to RottenPotatoes."
+    movie = Movie.new(title: params[:title], rating: params[:rating],
+                      description: params[:description],
+                      release_date: params[:release_date].presence)
+    if movie.save
+      flash[:success] = "#{movie.title} was successfully added to RottenPotatoes."
+    else
+      flash[:danger] = "Could not add #{movie.title}: #{movie.errors.full_messages.to_sentence}"
+    end
     redirect_to search_tmdb_path
   end
 

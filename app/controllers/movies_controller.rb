@@ -21,6 +21,24 @@ class MoviesController < ApplicationController
     # default: render 'new' template
   end
 
+  def search_tmdb
+    if params[:title].blank?
+      flash[:danger] = "Please fill in all required fields!"
+      redirect_to search_tmdb_path and return
+    end
+  
+    @movies = Movie.find_in_tmdb(params)
+    flash.now[:warning] = "No movies found with given parameters!" if @movies.empty?
+  end
+  
+  def add_movie
+    movie = Movie.create(title: params[:title], rating: params[:rating],
+                         description: params[:description],
+                         release_date: params[:release_date])
+    flash[:success] = "#{movie.title} was successfully added to RottenPotatoes."
+    redirect_to search_tmdb_path
+  end
+
   def create
     @movie = Movie.create!(movie_params)
     flash[:notice] = "#{@movie.title} was successfully created."

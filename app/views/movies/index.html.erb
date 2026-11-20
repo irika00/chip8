@@ -4,6 +4,7 @@
 <div class="row navigation">
   <div class="col-md-10">
     <%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
+      <%= link_to 'Search TMDb for a movie', search_tmdb_path %>
       <%= hidden_field_tag 'sort_by', @sort_by %>
       Include:
       <% @all_ratings.each do |rating| %>

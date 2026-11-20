@@ -22,6 +22,8 @@ class MoviesController < ApplicationController
   end
 
   def search_tmdb
+    return unless params.key?(:title)  
+  
     if params[:title].blank?
       flash[:danger] = "Please fill in all required fields!"
       redirect_to search_tmdb_path and return
